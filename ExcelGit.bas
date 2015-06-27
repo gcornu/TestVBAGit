@@ -115,12 +115,7 @@ Public Function WriteToGit()
             strTextFromStdStream = "[" & strProcessID & .ProcessID & "]" & .StdOut.ReadLine()
             Debug.Print strTextFromStdStream
         Loop
-        
-        If Not .StdErr.AtEndOfStream Then
-            Debug.Print "Dumping out Process StdErr"
-        End If
-        
-        
+
         Do While Not .StdErr.AtEndOfStream
             strTextFromStdStream = "[" & strProcessID & .ProcessID & "]" & .StdErr.ReadLine()
             Debug.Print strTextFromStdStream
