@@ -93,58 +93,42 @@ Public Function WriteToGit()
     
     With mWshell.Exec(strBuiltCommand)
     
-    '----------------------------------
+        ' Change directory
+        'strBuiltCommand = strChangeDirectoryTo
+        'Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand
+        '.StdIn.WriteLine strBuiltCommand
+        'strExecStatus = StatusToString(.Status)
+        'Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand & "=" & strExecStatus
         
-        strBuiltCommand = strChangeDirectoryTo
-        Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand
-        .StdIn.WriteLine strBuiltCommand
-        strExecStatus = StatusToString(.Status)
-        Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand & "=" & strExecStatus
-           
-        
-    '----------------------------------
-        
-        strBuiltCommand = strTitle
-        Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand
-        .StdIn.WriteLine strBuiltCommand
-        strExecStatus = StatusToString(.Status)
-        Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand & "=" & strExecStatus
-        
-    '----------------------------------
-        
+        '
         strBuiltCommand = strChangeDirectoryTo & Chr(VBA.KeyCodeConstants.vbKeySpace) & strSourceDirectory
         Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand
         .StdIn.WriteLine strBuiltCommand
         strExecStatus = StatusToString(.Status)
         Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand & "=" & strExecStatus
         
-    '----------------------------------
-                
+        ' Track files (git add .)
         strBuiltCommand = strGitAdd
         Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand
         .StdIn.WriteLine strBuiltCommand
         strExecStatus = StatusToString(.Status)
         Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand & "=" & strExecStatus
         
-    '----------------------------------
-                
+        ' Commit files (git commit -am)
         strBuiltCommand = strGitCommit & Chr(VBA.KeyCodeConstants.vbKeySpace) & """" & dtNow & ":" & Chr(VBA.KeyCodeConstants.vbKeySpace) & commitMessage & """"
         Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand
         .StdIn.WriteLine strBuiltCommand
         strExecStatus = StatusToString(.Status)
         Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand & "=" & strExecStatus
         
-    '----------------------------------
-    
+        ' Push commit (git push)
         strBuiltCommand = strGitPush
         Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand
         .StdIn.WriteLine strBuiltCommand
         strExecStatus = StatusToString(.Status)
         Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand & "=" & strExecStatus
-        
-    '----------------------------------
-    'Cleanup
-    '----------------------------------
+
+        'Cleanup
         .StdIn.Close
     
         If Not .StdOut.AtEndOfStream Then
@@ -173,55 +157,32 @@ Public Function WriteToGit()
 
 End Function
 
+' Inspired from http://visguy.com/vgforum/index.php?topic=3815.0
 Private Sub ExportVBAFiles()
-
-    'Dim pVBAProject As VBIDE.VBProject
-    'Dim project As VBIDE.VBProject
-    Dim vbComp As Variant  'VBA module, form, etc...
+    Dim vbComp As Variant
     Dim strSavePath As String
-    'Dim vbRef As VBIDE.Reference
-   
-      
-     ' Get the VBA project
-     ' If you want to export code for Normal instead, paste this macro into
-     ' ThisDocument in the Normal VBA project and change the following line to:
-     ' Set pVBAProject = ThisDocument.VBProject
 
-     'Set pVBAProject = Application.VBE.ActiveVBProject
-
-     strSavePath = "D:\Users\Gauthier\Downloads\TestVBAGit"
-          
-     'For Each vbRef In pVBAProject.References
-       'Debug.Print vbRef.description, vbRef.FullPath
-     'Next
-    
-     ' Loop through all the components (modules, forms, etc) in the VBA project
-    
+    strSavePath = "D:\Users\Gauthier\Downloads\TestVBAGit"
 
     
-     For Each vbComp In ThisWorkbook.VBProject.VBComponents
+    For Each vbComp In ThisWorkbook.VBProject.VBComponents
   
        Select Case vbComp.Type
   
-           Case vbext_ct_StdModule
+          Case vbext_ct_StdModule
                vbComp.Export strSavePath & "\" & vbComp.Name & ".bas"
   
-           Case vbext_ct_Document, vbext_ct_ClassModule
+          Case vbext_ct_Document, vbext_ct_ClassModule
                ' ThisDocument and class modules
                Call vbComp.Export(strSavePath & "\" & vbComp.Name & ".cls")
   
-           Case vbext_ct_MSForm
+          Case vbext_ct_MSForm
                vbComp.Export strSavePath & "\" & vbComp.Name & ".frm"
   
-           Case Else
+          Case Else
                vbComp.Export strSavePath & "\" & vbComp.Name
   
        End Select
 
      Next
-  
-     'MsgBox "VBA files have been exported to: " & strSavePath
-
-  
-
 End Sub
