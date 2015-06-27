@@ -94,13 +94,6 @@ Public Function WriteToGit()
     With mWshell.Exec(strBuiltCommand)
     
         ' Change directory
-        'strBuiltCommand = strChangeDirectoryTo
-        'Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand
-        '.StdIn.WriteLine strBuiltCommand
-        'strExecStatus = StatusToString(.Status)
-        'Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand & "=" & strExecStatus
-        
-        '
         strBuiltCommand = strChangeDirectoryTo & Chr(VBA.KeyCodeConstants.vbKeySpace) & strSourceDirectory
         Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand
         .StdIn.WriteLine strBuiltCommand
