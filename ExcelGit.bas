@@ -110,10 +110,6 @@ Public Function WriteToGit()
 
         'Cleanup
         .StdIn.Close
-    
-        If Not .StdOut.AtEndOfStream Then
-            Debug.Print "Dumping out Process StdOut"
-        End If
         
         Do While Not .StdOut.AtEndOfStream
             strTextFromStdStream = "[" & strProcessID & .ProcessID & "]" & .StdOut.ReadLine()
