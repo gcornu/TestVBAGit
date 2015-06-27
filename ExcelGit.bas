@@ -72,7 +72,6 @@ Public Function WriteToGit()
     Const strProcessID As String = "PID="
     Const strTitle As String = "title Alignment-Systems.com Git Integration"
     'Variables
-    Dim strExecStatus As String
     Dim dtNow As Date
     Dim strTextFromStdStream As String
     Dim strBuiltCommand As String
@@ -95,31 +94,19 @@ Public Function WriteToGit()
     
         ' Change directory
         strBuiltCommand = strChangeDirectoryTo & Chr(VBA.KeyCodeConstants.vbKeySpace) & strSourceDirectory
-        Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand
         .StdIn.WriteLine strBuiltCommand
-        strExecStatus = StatusToString(.Status)
-        Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand & "=" & strExecStatus
         
         ' Track files (git add .)
         strBuiltCommand = strGitAdd
-        Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand
         .StdIn.WriteLine strBuiltCommand
-        strExecStatus = StatusToString(.Status)
-        Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand & "=" & strExecStatus
         
         ' Commit files (git commit -am)
         strBuiltCommand = strGitCommit & Chr(VBA.KeyCodeConstants.vbKeySpace) & """" & dtNow & ":" & Chr(VBA.KeyCodeConstants.vbKeySpace) & commitMessage & """"
-        Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand
         .StdIn.WriteLine strBuiltCommand
-        strExecStatus = StatusToString(.Status)
-        Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand & "=" & strExecStatus
         
         ' Push commit (git push)
         strBuiltCommand = strGitPush
-        Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand
         .StdIn.WriteLine strBuiltCommand
-        strExecStatus = StatusToString(.Status)
-        Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand & "=" & strExecStatus
 
         'Cleanup
         .StdIn.Close
