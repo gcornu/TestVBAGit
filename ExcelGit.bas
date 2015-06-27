@@ -77,13 +77,14 @@ Public Function WriteToGit()
     Dim strTextFromStdStream As String
     Dim strBuiltCommand As String
     Dim strUserName As String
+    Dim commitMessage As String
     
     Set mWshell = New IWshRuntimeLibrary.WshShell
     Set mWsh = New IWshRuntimeLibrary.WshNetwork
     
-    strUserName = mWsh.UserName
-    
     dtNow = Now()
+    
+    commitMessage = InputBox("Commit message:")
     
     Call ExportVBAFiles
     
@@ -127,7 +128,7 @@ Public Function WriteToGit()
         
     '----------------------------------
                 
-        strBuiltCommand = strGitCommit & Chr(VBA.KeyCodeConstants.vbKeySpace) & """" & strUserName & Chr(VBA.KeyCodeConstants.vbKeySpace) & dtNow & """"
+        strBuiltCommand = strGitCommit & Chr(VBA.KeyCodeConstants.vbKeySpace) & """" & dtNow & ":" & Chr(VBA.KeyCodeConstants.vbKeySpace) & commitMessage & """"
         Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand
         .StdIn.WriteLine strBuiltCommand
         strExecStatus = StatusToString(.Status)
