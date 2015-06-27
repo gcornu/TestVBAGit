@@ -67,6 +67,7 @@ Public Function WriteToGit()
     Const strChangeDirectoryTo As String = "cd"
     Const strGitAdd As String = "git add ."
     Const strGitCommit As String = "git commit -am"
+    Const strGitPush As String = "git push"
     Const strGitStatus As String = "git status"
     Const strProcessID As String = "PID="
     Const strTitle As String = "title Alignment-Systems.com Git Integration"
@@ -127,6 +128,14 @@ Public Function WriteToGit()
     '----------------------------------
                 
         strBuiltCommand = strGitCommit & Chr(VBA.KeyCodeConstants.vbKeySpace) & """" & strUserName & Chr(VBA.KeyCodeConstants.vbKeySpace) & dtNow & """"
+        Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand
+        .StdIn.WriteLine strBuiltCommand
+        strExecStatus = StatusToString(.Status)
+        Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand & "=" & strExecStatus
+        
+    '----------------------------------
+    
+        strBuiltCommand = strGitPush
         Debug.Print "[" & strProcessID & .ProcessID & "]>" & strBuiltCommand
         .StdIn.WriteLine strBuiltCommand
         strExecStatus = StatusToString(.Status)
@@ -210,7 +219,7 @@ Private Sub ExportVBAFiles()
 
      Next
   
-     MsgBox "VBA files have been exported to: " & strSavePath
+     'MsgBox "VBA files have been exported to: " & strSavePath
 
   
 
