@@ -10,5 +10,5 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public Sub test()
- 'just a comment meant to test
+ 'just a comment meant to test again
 End Sub
