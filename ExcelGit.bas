@@ -9,7 +9,7 @@ Dim mWsh As IWshRuntimeLibrary.WshNetwork
 Dim mWshell As IWshRuntimeLibrary.WshShell
 
 ' Inspired from https://github.com/JohnGreenan/5_ExcelVBE/blob/master/ExcelGit.bas
-Public Sub WriteToGit()
+Private Sub PerformGitActions()
     'Const
     Const strSourceDirectory As String = "D:\Users\Gauthier\Downloads\TestVBAGit"
     Const strCMD As String = "cmd /K"
@@ -106,6 +106,13 @@ Private Sub ExportVBAFiles()
      Next
 End Sub
 
+Private Sub ExportWorkbook()
+    With ActiveWorkbook
+      .Save
+      .SaveCopyAs strSourceDirectory & "\" & ActiveWorkbook.Name
+    End With
+End Sub
+
 ' Inspired from https://christopherjmcclellan.wordpress.com/2014/10/10/vba-and-git/
 Private Sub RemoveAllModules()
     Dim project As VBProject
@@ -165,6 +172,12 @@ Private Sub ImportVBAFiles(sourcePath As String)
             End With
         End If
     Next file
+End Sub
+
+Public Sub WriteToGit()
+    Call ExportVBAFiles
+    Call ExportWorkbook
+    Call PerformGitActions
 End Sub
 
 Public Sub ReadFromGit()
